@@ -53,9 +53,11 @@ app.use('*', (req, res) => {
 
 // Database connection
 const connectDB = async () => {
+  
   try {
-    const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/cashflow-app';
-    await mongoose.connect(mongoURI);
+    const mongoURI = process.env.MONGODB_URI;
+    const res = await mongoose.connect(mongoURI);
+    
     console.log('MongoDB connected successfully');
   } catch (error) {
     console.error('MongoDB connection error:', error);
@@ -67,23 +69,13 @@ const connectDB = async () => {
 const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
+  
   await connectDB();
+  
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT} in ${process.env.NODE_ENV} mode`);
   });
 };
-
-// Handle unhandled promise rejections
-process.on('unhandledRejection', (err, promise) => {
-  console.log('Unhandled Rejection at:', promise, 'reason:', err);
-  process.exit(1);
-});
-
-// Handle uncaught exceptions
-process.on('uncaughtException', (err) => {
-  console.log('Uncaught Exception:', err);
-  process.exit(1);
-});
 
 startServer();
 
