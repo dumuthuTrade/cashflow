@@ -135,11 +135,13 @@ class AuthService {
    */
   async logout() {
     try {
-      // Try to notify the server
+      // Try to call logout endpoint if it exists
       await apiClient.post('/auth/logout');
     } catch (error) {
-      // Log error but don't throw - we still want to clear local storage
-      console.warn('Server logout failed:', error.message);
+      if (error.response?.status !== 404) {
+        console.error('Logout error:', error);
+      }
+      // Continue with client-side cleanup even if endpoint doesn't exist
     } finally {
       this._clearAuthData();
     }
@@ -182,15 +184,25 @@ class AuthService {
     try {
       const response = await apiClient.get('/auth/me');
       
-      if (response.status === 'success' && response.user) {
-        // Update stored user data
-        localStorage.setItem(this.userKey, JSON.stringify(response.user));
+      // Handle different response formats
+      if (response.status === 'success') {
+        return response.user || response.data;
+      }
+      
+      // Fallback for direct user data response
+      if (response.user) {
         return response.user;
       }
       
-      throw new Error('Invalid response format');
+      // Handle nested data structure
+      if (response.data && response.data.user) {
+        return response.data.user;
+      }
+      
+      throw new AuthError('Invalid response format - missing user data');
     } catch (error) {
-      this._handleAuthError(error, 'Failed to get user data');
+      this._handleAuthError(error, 'Failed to get current user');
+      throw error;
     }
   }
 

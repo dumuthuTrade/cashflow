@@ -38,10 +38,16 @@ export const useAuthStore = create(
       clearError: () => 
         set({ error: null }),
 
-      /**
-       * Initialize authentication state
-       */
       initializeAuth: async () => {
+        const currentState = get();
+        if (currentState.isAuthenticated && currentState.user && currentState.token) {
+          const isValidToken = authService.initializeAuth();
+          if (isValidToken) {
+            set({ isInitialized: true, isLoading: false });
+            return;
+          }
+        }
+
         set({ isLoading: true });
         
         try {
@@ -69,20 +75,15 @@ export const useAuthStore = create(
           }
         } catch (error) {
           console.error('Auth initialization failed:', error);
+          await get().logout();
           set({
-            user: null,
-            token: null,
-            isAuthenticated: false,
             isInitialized: true,
             isLoading: false,
-            error: error.message
+            error: 'Your session may have expired. Please log in again.'
           });
         }
       },
 
-      /**
-       * Login user
-       */
       login: async (credentials) => {
         set({ isLoading: true, error: null });
         
@@ -108,9 +109,6 @@ export const useAuthStore = create(
         }
       },
 
-      /**
-       * Register user
-       */
       register: async (userData) => {
         set({ isLoading: true, error: null });
         
@@ -136,9 +134,6 @@ export const useAuthStore = create(
         }
       },
 
-      /**
-       * Logout user
-       */
       logout: async () => {
         set({ isLoading: true });
         
@@ -157,9 +152,6 @@ export const useAuthStore = create(
         }
       },
 
-      /**
-       * Refresh authentication token
-       */
       refreshToken: async () => {
         try {
           const result = await authService.refreshToken();
@@ -183,22 +175,15 @@ export const useAuthStore = create(
         }
       },
 
-      /**
-       * Update user profile
-       */
       updateUser: (userData) => {
         const currentUser = get().user;
         const updatedUser = { ...currentUser, ...userData };
         
         set({ user: updatedUser });
-        
-        // Update stored user data
+
         localStorage.setItem('user_data', JSON.stringify(updatedUser));
       },
 
-      /**
-       * Clear authentication state
-       */
       clearAuth: () => {
         authService._clearAuthData?.();
         set({
@@ -210,7 +195,6 @@ export const useAuthStore = create(
         });
       },
 
-      // Computed values (getters)
       getUserName: () => {
         const { user } = get();
         return user?.name || user?.firstName || 'Guest';
@@ -238,17 +222,11 @@ export const useAuthStore = create(
           .slice(0, 2);
       },
 
-      /**
-       * Check if user has specific role/permission
-       */
       hasRole: (role) => {
         const { user } = get();
         return user?.roles?.includes(role) || false;
       },
 
-      /**
-       * Check if user has specific permission
-       */
       hasPermission: (permission) => {
         const { user } = get();
         return user?.permissions?.includes(permission) || false;
@@ -262,10 +240,8 @@ export const useAuthStore = create(
         isAuthenticated: state.isAuthenticated
       }),
       version: 1,
-      // Migration for future store versions
       migrate: (persistedState, version) => {
         if (version === 0) {
-          // Migration from version 0 to 1
           return {
             ...persistedState,
             isInitialized: false

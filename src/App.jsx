@@ -5,38 +5,42 @@ import { Suspense } from 'react';
 
 // Pages
 import LoginPage from './pages/LoginPage';
+import CustomersPage from './pages/CustomerPage'; 
+import SuppliersPage from './pages/SuppliersPage';
+import ChecksPage from './pages/ChecksPage';
 
 // Components
 import LoadingSpinner from './components/atoms/LoadingSpinner';
-import ErrorBoundary from './components/utils/ErrorBoundary';
+import AppLayout from './components/templates/AppLayout/AppLayout';
+import {AuthGuard} from './components/guards/AuthGuard';
 
-// Simple Protected Route Component
-const ProtectedRoute = ({ children }) => {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  return isAuthenticated ? children : <Navigate to="/login" replace />;
-};
-
-// Simple Public Route Component  
-const PublicRoute = ({ children }) => {
+// Auth route wrapper
+const AuthRoute = ({ children }) => {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   return isAuthenticated ? <Navigate to="/dashboard" replace /> : children;
 };
 
 function App() {
   return (
-    <ErrorBoundary>
       <AuthProvider>
         <Router>
           <Suspense fallback={<LoadingSpinner size="large" />}>
             <Routes>
-              <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
-              <Route path="/dashboard" element={<ProtectedRoute><>hi</></ProtectedRoute>} />
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              {/* Public Routes */}
+              <Route path="/login" element={<AuthRoute><LoginPage /></AuthRoute>} />
+              
+              {/* Protected Routes with Layout */}
+              <Route path="/" element={<AuthGuard><AppLayout /></AuthGuard>}>
+                <Route path="dashboard" element={<div className="p-6 bg-white rounded-lg shadow-sm"><h1 className="text-2xl font-bold text-gray-900">Dashboard</h1><p className="mt-2 text-gray-600">Welcome to CashFlow Dashboard</p></div>} />
+                <Route path="customers" element={<CustomersPage />} />
+                <Route path="suppliers" element={<SuppliersPage />} />
+                <Route path="checks" element={<ChecksPage />} />
+                <Route index element={<Navigate to="/dashboard" replace />} />
+              </Route>
             </Routes>
           </Suspense>
         </Router>
       </AuthProvider>
-    </ErrorBoundary>
   );
 }
 

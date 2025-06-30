@@ -12,6 +12,7 @@ const AuthContext = createContext(null);
  * Manages authentication state initialization and provides auth context
  */
 export const AuthProvider = ({ children }) => {
+  const store = useAuthStore();
   const {
     user,
     isAuthenticated,
@@ -24,8 +25,10 @@ export const AuthProvider = ({ children }) => {
     logout,
     clearError,
     refreshToken,
-    updateUser
-  } = useAuthStore();
+    updateUser,
+    hasRole: storeHasRole,
+    hasPermission: storeHasPermission
+  } = store;
 
   // Initialize authentication on app start
   useEffect(() => {
@@ -33,6 +36,18 @@ export const AuthProvider = ({ children }) => {
       initializeAuth();
     }
   }, [isInitialized, initializeAuth]);
+
+  // Role-based access control helper
+  const hasRole = (role) => {
+    if (!user) return false;
+    if (user.roles && Array.isArray(user.roles)) {
+      return user.roles.includes(role);
+    }
+    if (user.role) {
+      return user.role === role;
+    }
+    return false;
+  };
 
   const contextValue = {
     // State
@@ -48,7 +63,9 @@ export const AuthProvider = ({ children }) => {
     logout,
     clearError,
     updateUser,
-    refreshToken
+    refreshToken,
+    hasRole: storeHasRole || hasRole,
+    hasPermission: storeHasPermission || (() => false)
   };
 
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;

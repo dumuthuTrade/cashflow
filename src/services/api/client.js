@@ -1,10 +1,11 @@
 import { AuthError, NetworkError, ApiError } from '../../utils/errors';
+import config from '../../config/environment';
 
 /**
  * Enhanced API Client with better error handling and interceptors
  */
 class ApiClient {
-  constructor(baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api') {
+  constructor(baseURL = config.apiUrl) {
     this.baseURL = baseURL;
     this.token = null;
     this.requestInterceptors = [];
@@ -83,7 +84,7 @@ class ApiClient {
     // Try to extract error message from response
     if (response.json) {
       try {
-        const errorData = response.json();
+        const errorData = typeof response.json === 'function' ? response.json() : response.json;
         errorMessage = errorData.message || errorData.error || errorMessage;
       } catch {
         // Ignore JSON parsing errors
