@@ -294,11 +294,6 @@ const apiClient = new ApiClient();
 // Add default response interceptor for logging
 if (import.meta.env.DEV) {
   apiClient.addResponseInterceptor((response) => {
-    console.log('API Response:', {
-      url: response.url,
-      status: response.status,
-      statusText: response.statusText
-    });
     return response;
   });
 }
@@ -306,11 +301,6 @@ if (import.meta.env.DEV) {
 // Add request interceptor for logging in development
 if (import.meta.env.DEV) {
   apiClient.addRequestInterceptor((config) => {
-    console.log('API Request:', {
-      method: config.method,
-      url: config.url || 'URL not available',
-      headers: config.headers
-    });
     return config;
   });
 }

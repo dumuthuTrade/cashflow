@@ -17,12 +17,9 @@ const LayoutContent = () => {
   };
 
   const handleNavigate = (item) => {
-    // Let React Router handle the navigation naturally
-    console.log('Navigating to:', item.href);
   };
 
   const handleUserAction = (action) => {
-    console.log('User action:', action);
   };
 
   return (

@@ -35,13 +35,9 @@ const AppHeader = ({
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    // Handle search logic here
-    console.log('Search query:', searchQuery);
   };
 
   const handleNotificationClick = () => {
-    // Handle notification click
-    console.log('Notifications clicked');
   };
 
   return (

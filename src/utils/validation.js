@@ -50,7 +50,7 @@ export const validatePasswordStrict = (password) => {
     errors.push('Password must contain at least one number');
   }
   
-  if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]/.test(password)) {
+  if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
     errors.push('Password must contain at least one special character');
   }
   
@@ -212,4 +212,35 @@ export const validateLogin = (credentials) => {
     isValid: Object.keys(errors).length === 0,
     errors,
   };
+};
+
+/**
+ * Validate Sri Lankan phone number
+ * @param {string} phone - Phone number to validate
+ * @returns {string|null} Error message or null if valid
+ */
+export const validateSLPhoneNumber = (phone) => {
+  if (!phone) return null; // Optional field
+  const phoneRegex = /^(?:\+94|0)(?:(11|21|23|24|25|26|27|31|32|33|34|35|36|37|38|41|45|47|51|52|54|55|57|63|65|66|67|81|91)(0|2|3|4|5|7|9)|7(?:0|1|2|4|5|6|7|8)\d)\d{6}$/;
+  if (!phoneRegex.test(phone)) {
+    return 'Please enter a valid Sri Lankan phone number';
+  }
+  if (phone.length > 20) {
+    return 'Phone number cannot exceed 20 characters';
+  }
+  return null;
+};
+
+/**
+ * Validate Sri Lankan NIC
+ * @param {string} nic - NIC to validate
+ * @returns {string|null} Error message or null if valid
+ */
+export const validateSLNIC = (nic) => {
+  if (!nic) return null; // Optional field
+  const nicRegex = /^(?:\d{9}[vVxX]|\d{12})$/;
+  if (!nicRegex.test(nic)) {
+    return 'Please enter a valid Sri Lankan NIC (9 digits with V/X or 12 digits)';
+  }
+  return null;
 };

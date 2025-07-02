@@ -27,24 +27,11 @@ export const validateConfig = () => {
     issues.push('API URL is not configured');
   }
   
-  // Check if API URL is reachable (in development)
-  if (config.isDev) {
-    console.log('🌐 API URL:', config.apiUrl);
-  }
-  
   return {
     isValid: issues.length === 0,
     issues,
     config
   };
 };
-
-// Validate on import in development
-if (config.isDev) {
-  const validation = validateConfig();
-  if (!validation.isValid) {
-    console.warn('⚠️ Configuration issues:', validation.issues);
-  }
-}
 
 export default config;
