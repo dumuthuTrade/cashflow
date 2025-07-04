@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import LoginForm from '../components/molecules/LoginForm/LoginForm';
 import { useAuthStore } from '../store/authStore';
+import brandImg from '../components/atoms/Images/brand.jpg'; // Add this import
 
 const LoginPage = () => {
   const { login, isLoading, error } = useAuthStore();
@@ -19,8 +20,13 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        <div className="flex flex-col items-center">
+          <img
+            src={brandImg}
+            alt="Brand"
+            className="h-20 w-20 rounded-full mb-1 shadow-lg"
+          />
+          <h2 className="mt-1 text-center text-3xl font-extrabold text-gray-900">
             Sign in to your account
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">

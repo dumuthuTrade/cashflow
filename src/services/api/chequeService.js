@@ -21,7 +21,7 @@ class ChequeService {
     if (params.dateTo) searchParams.append('dateTo', params.dateTo);
 
     const queryString = searchParams.toString();
-    const endpoint = queryString ? `/api/cheques?${queryString}` : '/api/cheques';
+    const endpoint = queryString ? `/cheques?${queryString}` : '/api/cheques';
     
     const res = await apiClient.get(endpoint);    
     return res;
@@ -31,7 +31,7 @@ class ChequeService {
    * Get single cheque by ID
    */
   async getCheque(id) {
-    return apiClient.get(`/api/cheques/${id}`);
+    return apiClient.get(`/cheques/${id}`);
   }
 
   /**
@@ -40,35 +40,35 @@ class ChequeService {
   async createCheque(chequeData) {
     console.log('Creating cheque with data:', chequeData);
     
-    return apiClient.post('/api/cheques', chequeData);
+    return apiClient.post('/cheques', chequeData);
   }
 
   /**
    * Update cheque
    */
   async updateCheque(id, chequeData) {
-    return apiClient.put(`/api/cheques/${id}`, chequeData);
+    return apiClient.put(`/cheques/${id}`, chequeData);
   }
 
   /**
    * Delete cheque
    */
   async deleteCheque(id) {
-    return apiClient.delete(`/api/cheques/${id}`);
+    return apiClient.delete(`/cheques/${id}`);
   }
 
   /**
    * Get dashboard statistics
    */
   async getStats() {
-    return apiClient.get('/api/cheques/stats');
+    return apiClient.get('/cheques/stats');
   }
 
   /**
    * Update cheque status with history
    */
   async updateChequeStatus(id, status, notes = '') {
-    return apiClient.patch(`/api/cheques/${id}/status`, { status, notes });
+    return apiClient.patch(`/cheques/${id}/status`, { status, notes });
   }
 }
 

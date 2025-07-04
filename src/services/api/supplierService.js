@@ -17,7 +17,7 @@ class SupplierService {
     if (params.isActive !== undefined) searchParams.append('isActive', params.isActive);
 
     const queryString = searchParams.toString();
-    const endpoint = queryString ? `/api/suppliers?${queryString}` : '/api/suppliers';
+    const endpoint = queryString ? `/suppliers?${queryString}` : '/api/suppliers';
     
     const res = await apiClient.get(endpoint);    
     return res;
@@ -27,28 +27,28 @@ class SupplierService {
    * Get single supplier by ID
    */
   async getSupplier(id) {
-    return apiClient.get(`/api/suppliers/${id}`);
+    return apiClient.get(`/suppliers/${id}`);
   }
 
   /**
    * Create new supplier
    */
   async createSupplier(supplierData) {
-    return apiClient.post('/api/suppliers', supplierData);
+    return apiClient.post('/suppliers', supplierData);
   }
 
   /**
    * Update supplier
    */
   async updateSupplier(id, supplierData) {
-    return apiClient.put(`/api/suppliers/${id}`, supplierData);
+    return apiClient.put(`/suppliers/${id}`, supplierData);
   }
 
   /**
    * Delete supplier
    */
   async deleteSupplier(id) {
-    return apiClient.delete(`/api/suppliers/${id}`);
+    return apiClient.delete(`/suppliers/${id}`);
   }
 
   /**
@@ -58,7 +58,7 @@ class SupplierService {
     const searchParams = new URLSearchParams();
     searchParams.append('q', query);
     
-    return apiClient.get(`/api/suppliers/search?${searchParams.toString()}`);
+    return apiClient.get(`/suppliers/search?${searchParams.toString()}`);
   }
 }
 

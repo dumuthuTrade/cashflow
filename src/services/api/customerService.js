@@ -17,7 +17,7 @@ class CustomerService {
     if (params.isActive !== undefined) searchParams.append('isActive', params.isActive);
 
     const queryString = searchParams.toString();
-    const endpoint = queryString ? `/api/customers?${queryString}` : '/api/customers';
+    const endpoint = queryString ? `/customers?${queryString}` : '/api/customers';
     
     const res = await apiClient.get(endpoint);    
     return res;
@@ -27,28 +27,28 @@ class CustomerService {
    * Get single customer by ID
    */
   async getCustomer(id) {
-    return apiClient.get(`/api/customers/${id}`);
+    return apiClient.get(`/customers/${id}`);
   }
 
   /**
    * Create new customer
    */
   async createCustomer(customerData) {
-    return apiClient.post('/api/customers', customerData);
+    return apiClient.post('/customers', customerData);
   }
 
   /**
    * Update customer
    */
   async updateCustomer(id, customerData) {
-    return apiClient.put(`/api/customers/${id}`, customerData);
+    return apiClient.put(`/customers/${id}`, customerData);
   }
 
   /**
    * Delete customer
    */
   async deleteCustomer(id) {
-    return apiClient.delete(`/api/customers/${id}`);
+    return apiClient.delete(`/customers/${id}`);
   }
 
   /**
@@ -58,7 +58,7 @@ class CustomerService {
     const searchParams = new URLSearchParams();
     searchParams.append('q', query);
     
-    return apiClient.get(`/api/customers/search?${searchParams.toString()}`);
+    return apiClient.get(`/customers/search?${searchParams.toString()}`);
   }
 }
 

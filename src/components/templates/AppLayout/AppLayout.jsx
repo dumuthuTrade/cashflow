@@ -7,6 +7,7 @@ import Backdrop from '../../atoms/Backdrop';
 import AuthContext from '../../../contexts/AuthProvider';
 import { SidebarProvider } from '../../../contexts/SidebarContext.jsx';
 import { defaultNavigationGroups, defaultUserDropdownItems } from '../../../config/navigationConfig';
+import brandImg from '../../atoms/Images/brand.jpg';
 
 const LayoutContent = () => {
   const { hasRole, user, logout } = useContext(AuthContext);
@@ -30,7 +31,7 @@ const LayoutContent = () => {
           navigationGroups={defaultNavigationGroups}
           userDropdownItems={defaultUserDropdownItems}
           brandTitle="CashFlow"
-          brandIcon="💰"
+          brandIcon={<img src={brandImg} alt="Brand" className="h-14 w-14 rounded-full" />}
           onNavigate={handleNavigate}
           onUserAction={handleUserAction}
           onLogout={handleLogout}
