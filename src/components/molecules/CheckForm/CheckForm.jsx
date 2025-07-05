@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Input from '../../atoms/Input';
 import Button from '../../atoms/Button';
+import supplierService from '../../../services/api/supplierService'; 
+import { useMemo } from 'react';
 
 const ChequeForm = ({ 
   cheque = null, 
@@ -37,11 +39,29 @@ const ChequeForm = ({
       bankCharges: ''
     }
   });
-
+  const [suppliers, setSuppliers] = useState([]);
+  const [suppliersLoading, setSuppliersLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
   // Populate form when editing
   useEffect(() => {
+    const fetchSuppliers = async () => {
+      setSuppliersLoading(true);
+      try {
+        // Get all suppliers (no pagination, get all for dropdown)
+        const res = await supplierService.getSuppliers({ limit: 100, isActive: true });
+        if (res.status === 'success') {
+          setSuppliers(res.data.suppliers || []);
+        } else {
+          setSuppliers([]);
+        }
+      } catch (err) {
+        setSuppliers([]);
+      } finally {
+        setSuppliersLoading(false);
+      }
+    };
+    fetchSuppliers();
     if (cheque) {
       setFormData({
         chequeNumber: cheque.chequeNumber || '',
@@ -50,7 +70,7 @@ const ChequeForm = ({
           // transactionId: cheque.relatedTransaction?.transactionId || '',
           transactionType: cheque.relatedTransaction?.transactionType || 'purchase',
           customerId: cheque.relatedTransaction?.customerId || '',
-          supplierId: cheque.relatedTransaction?.supplierId || ''
+          supplierId: cheque.relatedTransaction?.supplierId._id || ''
         },
         chequeDetails: {
           amount: cheque.chequeDetails?.amount || '',
@@ -73,6 +93,16 @@ const ChequeForm = ({
       });
     }
   }, [cheque]);
+
+
+  const supplierOptions = useMemo(
+    () =>
+      suppliers.map(sup => ({
+        value: sup._id,
+        label: sup.name,
+      })),
+    [suppliers]
+  );
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -474,17 +504,27 @@ const ChequeForm = ({
           {/* Supplier ID - only show for purchase transactions */}
           {/* {formData.relatedTransaction.transactionType === 'purchase' && ( */}
             <div>
-              <Input
-                label="Supplier Name"
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Supplier Name <span className="text-red-500">*</span>
+              </label>
+              <select
                 name="relatedTransaction.supplierId"
-                type="text"
                 value={formData.relatedTransaction.supplierId}
                 onChange={handleChange}
-                error={errors['relatedTransaction.supplierId']}
+                disabled={loading || suppliersLoading}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-50 disabled:text-gray-500"
                 required
-                placeholder="Enter supplier ID (24 characters)"
-                disabled={loading}
-              />
+              >
+                <option value="">Select supplier</option>
+                {supplierOptions.map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              {errors['relatedTransaction.supplierId'] && (
+                <p className="mt-1 text-sm text-red-600">{errors['relatedTransaction.supplierId']}</p>
+              )}
             </div>
           {/* )} */}
         </div>

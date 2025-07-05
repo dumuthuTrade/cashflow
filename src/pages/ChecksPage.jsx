@@ -62,6 +62,15 @@ const ChequesPage = () => {
       )
     },
     {
+      key: 'relatedTransaction',
+      title: 'Supplier',
+      render: (value) => (
+        <div className="text-sm font-medium text-gray-900">
+          {value?.supplierId?.name || '-'}
+        </div>
+      )
+    },
+    {
       key: 'chequeDetails',
       title: 'Cheque Date',
       render: (value) => (
