@@ -49,13 +49,6 @@ const SuppliersPage = () => {
       )
     },
     {
-      key: 'contactPerson',
-      title: 'Contact Person',
-      render: (value) => (
-        <div className="text-sm text-gray-600">{value || '-'}</div>
-      )
-    },
-    {
       key: 'isActive',
       title: 'Status',
       render: (value) => (
@@ -152,7 +145,7 @@ const SuppliersPage = () => {
       setLoading(true);
       const response = await supplierService.deleteSupplier(supplier._id);
       
-      if (response.status === 'success') {
+      if (response.status === 204) {
         await fetchSuppliers(); // Refresh the list
       } else {
         throw new Error(response.message || 'Failed to delete supplier');

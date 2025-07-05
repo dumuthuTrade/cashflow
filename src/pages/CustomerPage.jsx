@@ -161,7 +161,7 @@ const CustomersPage = () => {
       setLoading(true);
       const response = await customerService.deleteCustomer(customer._id);
       
-      if (response.status === 'success') {
+      if (response.status === 204) {
         await fetchCustomers(); // Refresh the list
       } else {
         throw new Error(response.message || 'Failed to delete customer');
