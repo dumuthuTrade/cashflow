@@ -14,7 +14,6 @@ const SupplierForm = ({
     email: '',
     phone: '',
     address: '',
-    contactPerson: '',
     isActive: true
   });
 
@@ -28,7 +27,6 @@ const SupplierForm = ({
         email: supplier.email || '',
         phone: supplier.phone || '',
         address: supplier.address || '',
-        contactPerson: supplier.contactPerson || '',
         isActive: supplier.isActive !== false // default to true
       });
     }
@@ -93,7 +91,6 @@ const SupplierForm = ({
       email: formData.email.trim() || undefined,
       phone: formData.phone.trim() || undefined,
       address: formData.address.trim() || undefined,
-      contactPerson: formData.contactPerson.trim() || undefined,
     };
 
     // Remove undefined values
@@ -140,14 +137,6 @@ const SupplierForm = ({
         disabled={loading}
       />
 
-      <Input
-        label="Contact Person"
-        name="contactPerson"
-        value={formData.contactPerson}
-        onChange={handleChange}
-        placeholder="Enter contact person name"
-        disabled={loading}
-      />
 
       <div className="w-full">
         <label className="block text-sm font-medium text-gray-700 mb-1">

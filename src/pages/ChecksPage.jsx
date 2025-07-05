@@ -54,25 +54,11 @@ const ChequesPage = () => {
     },
     {
       key: 'chequeDetails',
-      title: 'Payee',
-      render: (value) => (
-        <div className="text-sm text-gray-900">{value?.payeeName || '-'}</div>
-      )
-    },
-    {
-      key: 'chequeDetails',
       title: 'Amount',
       render: (value) => (
         <div className="text-sm font-medium text-gray-900">
           ${value?.amount ? parseFloat(value.amount).toFixed(2) : '0.00'}
         </div>
-      )
-    },
-    {
-      key: 'chequeDetails',
-      title: 'Bank',
-      render: (value) => (
-        <div className="text-sm text-gray-600">{value?.bankName || '-'}</div>
       )
     },
     {
@@ -86,7 +72,7 @@ const ChequesPage = () => {
     },
     {
       key: 'relatedTransaction',
-      title: 'Transaction',
+      title: 'Transaction Type',
       render: (value) => (
         <div className="text-sm text-gray-600">
           <div>{value?.transactionType || '-'}</div>
@@ -425,12 +411,17 @@ const ChequesPage = () => {
         className="z-[9999]"
       >
         <ErrorBoundary>
+          <h3 className="font-bold">{editingCheque ? 'Edit Cheque' : 'Add New Cheque'}</h3>
+          <div className="min-h-screen bg-white flex items-center justify-center p-4">
+          <div className="w-full max-w-3xl h-[90vh] overflow-y-auto shadow-lg rounded-lg p-6">
           <ChequeForm
             cheque={editingCheque}
             onSubmit={handleFormSubmit}
             onCancel={handleModalClose}
             loading={formLoading}
           />
+          </div>
+          </div>
         </ErrorBoundary>
       </Modal>
 

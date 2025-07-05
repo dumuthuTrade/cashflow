@@ -13,18 +13,18 @@ const ChequeForm = ({
     chequeNumber: '',
     type: 'issued',
     relatedTransaction: {
-      transactionId: '',
-      transactionType: 'sale',
+      // transactionId: '',
+      transactionType: 'purchase',
       customerId: '',
       supplierId: ''
     },
     chequeDetails: {
       amount: '',
       chequeDate: '',
-      bankName: '',
-      accountNumber: '',
-      drawerName: '',
-      payeeName: '',
+      // bankName: '',
+      // accountNumber: '',
+      // drawerName: '',
+      // payeeName: '',
       depositDate: '',
       clearanceDate: ''
     },
@@ -47,18 +47,18 @@ const ChequeForm = ({
         chequeNumber: cheque.chequeNumber || '',
         type: cheque.type || 'issued',
         relatedTransaction: {
-          transactionId: cheque.relatedTransaction?.transactionId || '',
-          transactionType: cheque.relatedTransaction?.transactionType || 'sale',
+          // transactionId: cheque.relatedTransaction?.transactionId || '',
+          transactionType: cheque.relatedTransaction?.transactionType || 'purchase',
           customerId: cheque.relatedTransaction?.customerId || '',
           supplierId: cheque.relatedTransaction?.supplierId || ''
         },
         chequeDetails: {
           amount: cheque.chequeDetails?.amount || '',
           chequeDate: cheque.chequeDetails?.chequeDate ? cheque.chequeDetails.chequeDate.split('T')[0] : '',
-          bankName: cheque.chequeDetails?.bankName || '',
-          accountNumber: cheque.chequeDetails?.accountNumber || '',
-          drawerName: cheque.chequeDetails?.drawerName || '',
-          payeeName: cheque.chequeDetails?.payeeName || '',
+          // bankName: cheque.chequeDetails?.bankName || '',
+          // accountNumber: cheque.chequeDetails?.accountNumber || '',
+          // drawerName: cheque.chequeDetails?.drawerName || '',
+          // payeeName: cheque.chequeDetails?.payeeName || '',
           depositDate: cheque.chequeDetails?.depositDate ? cheque.chequeDetails.depositDate.split('T')[0] : '',
           clearanceDate: cheque.chequeDetails?.clearanceDate ? cheque.chequeDetails.clearanceDate.split('T')[0] : ''
         },
@@ -116,11 +116,12 @@ const ChequeForm = ({
     }
 
     // Transaction ID validation (required, valid ObjectId format)
-    if (!formData.relatedTransaction.transactionId) {
-      newErrors['relatedTransaction.transactionId'] = 'Transaction ID is required';
-    } else if (!/^[0-9a-fA-F]{24}$/.test(formData.relatedTransaction.transactionId)) {
-      newErrors['relatedTransaction.transactionId'] = 'Transaction ID must be a valid ObjectId (24 characters)';
-    }
+    // if (!formData.relatedTransaction.transactionId) {
+    //   newErrors['relatedTransaction.transactionId'] = 'Transaction ID is required';
+    // } else
+    // if (!/^[0-9a-fA-F]{24}$/.test(formData.relatedTransaction.transactionId)) {
+    //   newErrors['relatedTransaction.transactionId'] = 'Transaction ID must be a valid ObjectId (24 characters)';
+    // }
 
     // Transaction Type validation (required)
     if (!formData.relatedTransaction.transactionType) {
@@ -161,33 +162,33 @@ const ChequeForm = ({
       newErrors['chequeDetails.chequeDate'] = 'Cheque date is required';
     }
 
-    // Bank Name validation (required, max 100 characters)
-    if (!formData.chequeDetails.bankName.trim()) {
-      newErrors['chequeDetails.bankName'] = 'Bank name is required';
-    } else if (formData.chequeDetails.bankName.trim().length > 100) {
-      newErrors['chequeDetails.bankName'] = 'Bank name cannot exceed 100 characters';
-    }
+    // // Bank Name validation (required, max 100 characters)
+    // if (!formData.chequeDetails.bankName.trim()) {
+    //   newErrors['chequeDetails.bankName'] = 'Bank name is required';
+    // } else if (formData.chequeDetails.bankName.trim().length > 100) {
+    //   newErrors['chequeDetails.bankName'] = 'Bank name cannot exceed 100 characters';
+    // }
 
-    // Account Number validation (required, max 50 characters)
-    if (!formData.chequeDetails.accountNumber.trim()) {
-      newErrors['chequeDetails.accountNumber'] = 'Account number is required';
-    } else if (formData.chequeDetails.accountNumber.trim().length > 50) {
-      newErrors['chequeDetails.accountNumber'] = 'Account number cannot exceed 50 characters';
-    }
+    // // Account Number validation (required, max 50 characters)
+    // if (!formData.chequeDetails.accountNumber.trim()) {
+    //   newErrors['chequeDetails.accountNumber'] = 'Account number is required';
+    // } else if (formData.chequeDetails.accountNumber.trim().length > 50) {
+    //   newErrors['chequeDetails.accountNumber'] = 'Account number cannot exceed 50 characters';
+    // }
 
-    // Drawer Name validation (required, max 100 characters)
-    if (!formData.chequeDetails.drawerName.trim()) {
-      newErrors['chequeDetails.drawerName'] = 'Drawer name is required';
-    } else if (formData.chequeDetails.drawerName.trim().length > 100) {
-      newErrors['chequeDetails.drawerName'] = 'Drawer name cannot exceed 100 characters';
-    }
+    // // Drawer Name validation (required, max 100 characters)
+    // if (!formData.chequeDetails.drawerName.trim()) {
+    //   newErrors['chequeDetails.drawerName'] = 'Drawer name is required';
+    // } else if (formData.chequeDetails.drawerName.trim().length > 100) {
+    //   newErrors['chequeDetails.drawerName'] = 'Drawer name cannot exceed 100 characters';
+    // }
 
     // Payee Name validation (required, max 100 characters)
-    if (!formData.chequeDetails.payeeName.trim()) {
-      newErrors['chequeDetails.payeeName'] = 'Payee name is required';
-    } else if (formData.chequeDetails.payeeName.trim().length > 100) {
-      newErrors['chequeDetails.payeeName'] = 'Payee name cannot exceed 100 characters';
-    }
+    // if (!formData.chequeDetails.payeeName.trim()) {
+    //   newErrors['chequeDetails.payeeName'] = 'Payee name is required';
+    // } else if (formData.chequeDetails.payeeName.trim().length > 100) {
+    //   newErrors['chequeDetails.payeeName'] = 'Payee name cannot exceed 100 characters';
+    // }
 
     // Date validations
     const chequeDate = new Date(formData.chequeDetails.chequeDate);
@@ -209,32 +210,32 @@ const ChequeForm = ({
     }
 
     // Bank Processing validations
-    if (formData.bankProcessing.depositDate) {
-      const bankDepositDate = new Date(formData.bankProcessing.depositDate);
-      if (bankDepositDate < chequeDate) {
-        newErrors['bankProcessing.depositDate'] = 'Bank deposit date cannot be before cheque date';
-      }
-    }
+    // if (formData.bankProcessing.depositDate) {
+    //   const bankDepositDate = new Date(formData.bankProcessing.depositDate);
+    //   if (bankDepositDate < chequeDate) {
+    //     newErrors['bankProcessing.depositDate'] = 'Bank deposit date cannot be before cheque date';
+    //   }
+    // }
 
-    if (formData.bankProcessing.clearanceDate) {
-      const bankClearanceDate = new Date(formData.bankProcessing.clearanceDate);
-      if (formData.bankProcessing.depositDate) {
-        const bankDepositDate = new Date(formData.bankProcessing.depositDate);
-        if (bankClearanceDate < bankDepositDate) {
-          newErrors['bankProcessing.clearanceDate'] = 'Clearance date cannot be before deposit date';
-        }
-      }
-    }
+    // if (formData.bankProcessing.clearanceDate) {
+    //   const bankClearanceDate = new Date(formData.bankProcessing.clearanceDate);
+    //   if (formData.bankProcessing.depositDate) {
+    //     const bankDepositDate = new Date(formData.bankProcessing.depositDate);
+    //     if (bankClearanceDate < bankDepositDate) {
+    //       newErrors['bankProcessing.clearanceDate'] = 'Clearance date cannot be before deposit date';
+    //     }
+    //   }
+    // }
 
-    if (formData.bankProcessing.bounceDate) {
-      const bounceDate = new Date(formData.bankProcessing.bounceDate);
-      if (formData.bankProcessing.depositDate) {
-        const bankDepositDate = new Date(formData.bankProcessing.depositDate);
-        if (bounceDate < bankDepositDate) {
-          newErrors['bankProcessing.bounceDate'] = 'Bounce date cannot be before deposit date';
-        }
-      }
-    }
+    // if (formData.bankProcessing.bounceDate) {
+    //   const bounceDate = new Date(formData.bankProcessing.bounceDate);
+    //   // if (formData.bankProcessing.depositDate) {
+    //   //   const bankDepositDate = new Date(formData.bankProcessing.depositDate);
+    //   //   if (bounceDate < bankDepositDate) {
+    //   //     newErrors['bankProcessing.bounceDate'] = 'Bounce date cannot be before deposit date';
+    //   //   }
+    //   // }
+    // }
 
     // Bounce reason validation (required when status is bounced, max 200 characters)
     if (formData.status === 'bounced') {
@@ -271,23 +272,23 @@ const ChequeForm = ({
       chequeNumber: formData.chequeNumber.trim() || undefined,
       type: formData.type.toLowerCase(),
       relatedTransaction: {
-        transactionId: formData.relatedTransaction.transactionId,
+        // transactionId: formData.relatedTransaction.transactionId,
         transactionType: formData.relatedTransaction.transactionType.toLowerCase()
       },
       chequeDetails: {
         amount: parseFloat(formData.chequeDetails.amount),
         chequeDate: formData.chequeDetails.chequeDate,
-        depositDate: formData.chequeDetails.depositDate || undefined,
-        bankName: formData.chequeDetails.bankName.trim(),
-        accountNumber: formData.chequeDetails.accountNumber.trim(),
-        drawerName: formData.chequeDetails.drawerName.trim(),
-        payeeName: formData.chequeDetails.payeeName.trim(),
-        clearanceDate: formData.chequeDetails.clearanceDate || undefined
+        // depositDate: formData.chequeDetails.depositDate || undefined,
+        // bankName: formData.chequeDetails.bankName.trim(),
+        // accountNumber: formData.chequeDetails.accountNumber.trim(),
+        // drawerName: formData.chequeDetails.drawerName.trim(),
+        // payeeName: formData.chequeDetails.payeeName.trim(),
+        // clearanceDate: formData.chequeDetails.clearanceDate || undefined
       },
       status: formData.status.toLowerCase(),
       bankProcessing: {
-        depositDate: formData.bankProcessing.depositDate || undefined,
-        clearanceDate: formData.bankProcessing.clearanceDate || undefined,
+        // depositDate: formData.bankProcessing.depositDate || undefined,
+        // clearanceDate: formData.bankProcessing.clearanceDate || undefined,
         bounceDate: formData.bankProcessing.bounceDate || undefined,
         bounceReason: formData.bankProcessing.bounceReason.trim() || undefined,
         bankCharges: formData.bankProcessing.bankCharges ? parseFloat(formData.bankProcessing.bankCharges) : 0
@@ -324,11 +325,11 @@ const ChequeForm = ({
 
   const typeOptions = [
     { value: 'issued', label: 'Issued' },
-    { value: 'received', label: 'Received' }
+    // { value: 'received', label: 'Received' }
   ];
 
   const transactionTypeOptions = [
-    { value: 'sale', label: 'Sale' },
+    // { value: 'sale', label: 'Sale' },
     { value: 'purchase', label: 'Purchase' }
   ];
 
@@ -406,27 +407,6 @@ const ChequeForm = ({
               <p className="mt-1 text-sm text-red-600">{errors.status}</p>
             )}
           </div>
-        </div>
-      </div>
-
-      {/* Transaction Information */}
-      <div className="space-y-4">
-        <h3 className="text-lg font-medium text-gray-900">Transaction Information</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Transaction ID */}
-          <div>
-            <Input
-              label="Transaction ID"
-              name="relatedTransaction.transactionId"
-              type="text"
-              value={formData.relatedTransaction.transactionId}
-              onChange={handleChange}
-              error={errors['relatedTransaction.transactionId']}
-              required
-              placeholder="Enter transaction ID (24 characters)"
-              disabled={loading}
-            />
-          </div>
 
           {/* Transaction Type */}
           <div>
@@ -450,8 +430,31 @@ const ChequeForm = ({
               <p className="mt-1 text-sm text-red-600">{errors['relatedTransaction.transactionType']}</p>
             )}
           </div>
+        </div>
+      </div>
 
-          {/* Customer ID - only show for sale transactions */}
+      {/* Supplier Information */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-medium text-gray-900">Supplier Information</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Transaction ID */}
+          {/* <div>
+            <Input
+              label="Transaction ID"
+              name="relatedTransaction.transactionId"
+              type="text"
+              value={formData.relatedTransaction.transactionId}
+              onChange={handleChange}
+              error={errors['relatedTransaction.transactionId']}
+              // required
+              placeholder="Enter transaction ID (24 characters)"
+              disabled={loading}
+            />
+          </div> */}
+
+
+
+          {/* Customer ID - only show for sale transactions
           {formData.relatedTransaction.transactionType === 'sale' && (
             <div>
               <Input
@@ -466,13 +469,13 @@ const ChequeForm = ({
                 disabled={loading}
               />
             </div>
-          )}
+          )} */}
 
           {/* Supplier ID - only show for purchase transactions */}
-          {formData.relatedTransaction.transactionType === 'purchase' && (
+          {/* {formData.relatedTransaction.transactionType === 'purchase' && ( */}
             <div>
               <Input
-                label="Supplier ID"
+                label="Supplier Name"
                 name="relatedTransaction.supplierId"
                 type="text"
                 value={formData.relatedTransaction.supplierId}
@@ -483,7 +486,7 @@ const ChequeForm = ({
                 disabled={loading}
               />
             </div>
-          )}
+          {/* )} */}
         </div>
       </div>
 
@@ -523,7 +526,7 @@ const ChequeForm = ({
           </div>
 
           {/* Bank Name */}
-          <div>
+          {/* <div>
             <Input
               label="Bank Name"
               name="chequeDetails.bankName"
@@ -536,10 +539,10 @@ const ChequeForm = ({
               placeholder="Enter bank name (max 100 chars)"
               disabled={loading}
             />
-          </div>
+          </div> */}
 
           {/* Account Number */}
-          <div>
+          {/* <div>
             <Input
               label="Account Number"
               name="chequeDetails.accountNumber"
@@ -552,10 +555,10 @@ const ChequeForm = ({
               placeholder="Enter account number (max 50 chars)"
               disabled={loading}
             />
-          </div>
+          </div> */}
 
           {/* Drawer Name */}
-          <div>
+          {/* <div>
             <Input
               label="Drawer Name"
               name="chequeDetails.drawerName"
@@ -568,10 +571,10 @@ const ChequeForm = ({
               placeholder="Enter drawer name (max 100 chars)"
               disabled={loading}
             />
-          </div>
+          </div> */}
 
           {/* Payee Name */}
-          <div>
+          {/* <div>
             <Input
               label="Payee Name"
               name="chequeDetails.payeeName"
@@ -584,10 +587,10 @@ const ChequeForm = ({
               placeholder="Enter payee name (max 100 chars)"
               disabled={loading}
             />
-          </div>
+          </div> */}
 
           {/* Deposit Date */}
-          <div>
+          {/* <div>
             <Input
               label="Deposit Date"
               name="chequeDetails.depositDate"
@@ -598,10 +601,10 @@ const ChequeForm = ({
               placeholder="Optional"
               disabled={loading}
             />
-          </div>
+          </div> */}
 
           {/* Clearance Date */}
-          <div>
+          {/* <div>
             <Input
               label="Clearance Date"
               name="chequeDetails.clearanceDate"
@@ -612,7 +615,7 @@ const ChequeForm = ({
               placeholder="Optional"
               disabled={loading}
             />
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -622,7 +625,7 @@ const ChequeForm = ({
           <h3 className="text-lg font-medium text-gray-900">Bank Processing</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Bank Deposit Date */}
-            <div>
+            {/* <div>
               <Input
                 label="Bank Deposit Date"
                 name="bankProcessing.depositDate"
@@ -632,10 +635,10 @@ const ChequeForm = ({
                 error={errors['bankProcessing.depositDate']}
                 disabled={loading}
               />
-            </div>
+            </div> */}
 
             {/* Bank Clearance Date */}
-            {formData.status === 'cleared' && (
+            {/* {formData.status === 'cleared' && (
               <div>
                 <Input
                   label="Bank Clearance Date"
@@ -647,7 +650,7 @@ const ChequeForm = ({
                   disabled={loading}
                 />
               </div>
-            )}
+            )} */}
 
             {/* Bounce Date and Reason */}
             {formData.status === 'bounced' && (
