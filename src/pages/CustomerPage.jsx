@@ -313,16 +313,22 @@ const CustomersPage = () => {
         isOpen={isModalOpen}
         onClose={handleModalClose}
         title={editingCustomer ? 'Edit Customer' : 'Add New Customer'}
-        size="medium"
+        size="large"
         className="z-[9999]"
       >
         <ErrorBoundary>
-          <CustomerForm
-            customer={editingCustomer}
-            onSubmit={handleFormSubmit}
-            onCancel={handleModalClose}
-            loading={formLoading}
-          />
+          <h3 className="font-bold">{editingCustomer ? 'Edit Customer' : 'Add New Customer'}</h3>
+          <div className="min-h-screen bg-white flex items-center justify-center p-4">
+          <div className="w-full max-w-3xl h-[90vh] overflow-y-auto shadow-lg rounded-lg p-6">
+                <CustomerForm
+                  customer={editingCustomer}
+                  onSubmit={handleFormSubmit}
+                  onCancel={handleModalClose}
+                  loading={formLoading}
+                />
+            </div>
+          </div>
+
         </ErrorBoundary>
       </Modal>
     </div>
