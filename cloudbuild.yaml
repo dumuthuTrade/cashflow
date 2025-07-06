@@ -18,6 +18,8 @@ steps:
     - 'gcr.io/$PROJECT_ID/cashflow-web'
     - '--region'
     - 'europe-west1'
+    - '--port'
+    - '80'
     - '--platform'
     - 'managed'
     - '--allow-unauthenticated'
